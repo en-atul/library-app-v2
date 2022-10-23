@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
         )
         .pipe(timeout(5000));
       const res$ = await lastValueFrom(source$);
+      req.user = res$;
       return res$;
     } catch (err) {
       Logger.error(err);

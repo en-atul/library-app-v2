@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { BooksService } from './books.service';
 
-@Controller()
+@Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
-  @Get()
-  getHello(): string {
-    return this.booksService.getHello();
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  create(): string {
+    return this.booksService.create();
   }
 }

@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
@@ -7,6 +7,7 @@ import { AuthDto } from './dto';
 import { JwtPayload, Tokens } from './types';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,8 @@ export class AuthService {
     private userModel: Model<User>,
     private jwtService: JwtService,
     private config: ConfigService,
+    @Inject('SERVICE_BOOKS') private readonly clientServiceA: ClientProxy,
+    @Inject('SERVICE_MEMBERS') private readonly clientServiceB: ClientProxy,
   ) {}
 
   async signup(
@@ -70,7 +73,7 @@ export class AuthService {
     const user = await this.userModel.findOne({
       _id,
     });
-    
+
     if (!user || !user.hashedRt) throw new ForbiddenException('Access Denied');
 
     const rtMatches = await argon.verify(user.hashedRt, rt);
@@ -111,5 +114,11 @@ export class AuthService {
       access_token: at,
       refresh_token: rt,
     };
+  }
+
+  validateToken(jwt: string) {
+    return this.jwtService.verify(jwt, {
+      secret: this.config.get<string>('AT_SECRET'),
+    });
   }
 }

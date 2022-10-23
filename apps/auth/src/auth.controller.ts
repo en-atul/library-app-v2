@@ -1,12 +1,14 @@
-import { RtGuard, Public, GetCurrentUserId, GetCurrentUser } from '@app/common';
+import { RtGuard, Public, GetCurrentUserId, GetCurrentUser, AtGuard } from '@app/common';
 import {
   Body,
   Controller,
   HttpCode,
   HttpStatus,
+  Logger,
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
@@ -34,6 +36,7 @@ export class AuthController {
     return this.authService.signin(dto);
   }
 
+  @UseGuards(AtGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout(@GetCurrentUserId() userId: number): Promise<boolean> {
@@ -49,5 +52,18 @@ export class AuthController {
     @GetCurrentUser('refreshToken') refreshToken: string,
   ): Promise<Tokens> {
     return this.authService.refreshTokens(userId, refreshToken);
+  }
+
+  @MessagePattern({ role: 'auth', cmd: 'check' })
+  async loggedIn({ jwt }: { jwt: string }) {
+    try {
+      const res = this.authService.validateToken(jwt);
+      Logger.log('tokentatatata', jwt, res);
+
+      return res;
+    } catch (e) {
+      Logger.log(e);
+      return false;
+    }
   }
 }

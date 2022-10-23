@@ -14,7 +14,7 @@ import { AtStrategy, RtStrategy } from './strategies';
   imports: [
     ClientsModule.register([
       {
-        name: 'BOOKS_CLIENT',
+        name: 'SERVICE_BOOKS',
         transport: Transport.TCP,
         options: {
           host: 'localhost',
@@ -22,7 +22,7 @@ import { AtStrategy, RtStrategy } from './strategies';
         },
       },
       {
-        name: 'MEMBERS_CLIENT',
+        name: 'SERVICE_MEMBERS',
         transport: Transport.TCP,
         options: {
           host: 'localhost',
@@ -35,15 +35,7 @@ import { AtStrategy, RtStrategy } from './strategies';
       isGlobal: true,
     }),
     DatabaseModule,
-    JwtModule.registerAsync({
-      useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        // signOptions: {
-        //   expiresIn: `${configService.get('JWT_EXPIRATION')}s`,
-        // },
-      }),
-      inject: [ConfigService],
-    }),
+    JwtModule.register({}),
     MongooseModule.forFeature([
       {
         name: User.name,

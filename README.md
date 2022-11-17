@@ -2,11 +2,11 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-step 1. run docker container to avail mongo & rabbitmq in local
-     # docker-compose up -d (i.e. run docker in detached mode)
+step 1. run docker container to avail mongo & rabbitmq in local<br/>
+     # docker-compose up -d (i.e. run docker in detached mode)<br/>
         - view rabbitmq interface at http://localhost:15673
 
-step 2. run all microservices <br/>
+step 2. run all microservices <br/><br/>
     - npm run start:dev auth<br/>
     - npm run start:dev books<br/>
     - npm run start:dev members

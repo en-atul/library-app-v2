@@ -23,8 +23,8 @@ Step 2:
 ## Running all microservices
 
 ```bash
- $ npm run start:dev auth<br/>
- $ npm run start:dev books<br/>
+ $ npm run start:dev auth
+ $ npm run start:dev books
  $ npm run start:dev members
 ```
 

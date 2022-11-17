@@ -2,6 +2,15 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
+step 1. run docker container to avail mongo & rabbitmq in local
+     # docker-compose up -d (i.e. run docker in detached mode)
+        - view rabbitmq interface at http://localhost:15673
+
+step 2. run all microservices
+    - npm run start:dev auth
+    - npm run start:dev books
+    - npm run start:dev members
+
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 

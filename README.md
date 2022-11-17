@@ -6,9 +6,9 @@ step 1. run docker container to avail mongo & rabbitmq in local
      # docker-compose up -d (i.e. run docker in detached mode)
         - view rabbitmq interface at http://localhost:15673
 
-step 2. run all microservices
-    - npm run start:dev auth
-    - npm run start:dev books
+step 2. run all microservices <br/>
+    - npm run start:dev auth<br/>
+    - npm run start:dev books<br/>
     - npm run start:dev members
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456

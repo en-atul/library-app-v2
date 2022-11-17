@@ -6,13 +6,17 @@ import { BooksModule } from './books.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(BooksModule);
+  app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);
 
   app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.RMQ,
     options: {
-      host: 'localhost',
-      port: 4002,
+      urls: ['amqp://localhost:5673'],
+      queue: 'books_queue',
+      queueOptions: {
+        durable: false,
+      },
     },
   });
   await app.startAllMicroservices();

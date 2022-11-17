@@ -10,18 +10,24 @@ import { MembersService } from './members.service';
     ClientsModule.register([
       {
         name: 'SERVICE_AUTH',
-        transport: Transport.TCP,
+        transport: Transport.RMQ,
         options: {
-          host: 'localhost',
-          port: 4001,
+          urls: ['amqp://localhost:5673'],
+          queue: 'auth_queue',
+          queueOptions: {
+            durable: false,
+          },
         },
       },
       {
         name: 'SERVICE_BOOKS',
-        transport: Transport.TCP,
+        transport: Transport.RMQ,
         options: {
-          host: 'localhost',
-          port: 4002,
+          urls: ['amqp://localhost:5673'],
+          queue: 'books_queue',
+          queueOptions: {
+            durable: false,
+          },
         },
       },
     ]),

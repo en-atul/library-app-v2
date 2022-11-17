@@ -6,13 +6,18 @@ import { AuthModule } from './auth.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
+  app.setGlobalPrefix('api');
+
   const configService = app.get(ConfigService);
 
   app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.RMQ,
     options: {
-      host: 'localhost',
-      port: 4001,
+      urls: ['amqp://localhost:5673'],
+      queue: 'auth_queue',
+      queueOptions: {
+        durable: false,
+      },
     },
   });
   await app.startAllMicroservices();

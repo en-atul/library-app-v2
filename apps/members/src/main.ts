@@ -6,13 +6,18 @@ import { MembersModule } from './members.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(MembersModule);
+  app.setGlobalPrefix('api');
+
   const configService = app.get(ConfigService);
 
   app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.RMQ,
     options: {
-      host: 'localhost',
-      port: 4003,
+      urls: ['amqp://localhost:5673'],
+      queue: 'members_queue',
+      queueOptions: {
+        durable: false,
+      },
     },
   });
   await app.startAllMicroservices();

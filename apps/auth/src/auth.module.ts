@@ -1,6 +1,6 @@
 import { DatabaseModule } from '@app/common';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -15,18 +15,24 @@ import { AtStrategy, RtStrategy } from './strategies';
     ClientsModule.register([
       {
         name: 'SERVICE_BOOKS',
-        transport: Transport.TCP,
+        transport: Transport.RMQ,
         options: {
-          host: 'localhost',
-          port: 4002,
+          urls: ['amqp://localhost:5673'],
+          queue: 'books_queue',
+          queueOptions: {
+            durable: false,
+          },
         },
       },
       {
         name: 'SERVICE_MEMBERS',
-        transport: Transport.TCP,
+        transport: Transport.RMQ,
         options: {
-          host: 'localhost',
-          port: 4003,
+          urls: ['amqp://localhost:5673'],
+          queue: 'members_queue',
+          queueOptions: {
+            durable: false,
+          },
         },
       },
     ]),

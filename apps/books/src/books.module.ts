@@ -13,18 +13,24 @@ import { Book, BookSchema } from './entities/book.entities';
     ClientsModule.register([
       {
         name: 'SERVICE_AUTH',
-        transport: Transport.TCP,
+        transport: Transport.RMQ,
         options: {
-          host: 'localhost',
-          port: 4001,
+          urls: ['amqp://localhost:5673'],
+          queue: 'auth_queue',
+          queueOptions: {
+            durable: false,
+          },
         },
       },
       {
         name: 'SERVICE_MEMBERS',
-        transport: Transport.TCP,
+        transport: Transport.RMQ,
         options: {
-          host: 'localhost',
-          port: 4003,
+          urls: ['amqp://localhost:5673'],
+          queue: 'members_queue',
+          queueOptions: {
+            durable: false,
+          },
         },
       },
     ]),

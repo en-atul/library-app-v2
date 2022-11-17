@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern } from '@nestjs/microservices';
 
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
@@ -54,7 +54,7 @@ export class AuthController {
     return this.authService.refreshTokens(userId, refreshToken);
   }
 
-  @MessagePattern({ role: 'auth', cmd: 'check' })
+  @EventPattern({ role: 'auth', cmd: 'check' })
   async loggedIn({ jwt }: { jwt: string }) {
     try {
       const res = this.authService.validateToken(jwt);

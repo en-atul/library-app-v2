@@ -4,7 +4,23 @@ services:
   db:
     image: mongo # container image to be used
     restart: always 
+    depends_on:
+      - rabbitmq
     ports: # expose ports in “host:container” format
       - 27017:27017
     environment: #env variables to pass into the container
        MONGODB_DATABASE: library
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5673:5672
+        - 15673:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - rabbitmq_nodejs   
+networks:
+  rabbitmq_nodejs:
+    driver: bridge        
